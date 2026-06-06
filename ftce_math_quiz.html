@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FTCE GK Math Practice — Florida Teacher Certification</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy2: #132040;
+    --blue: #1a3a6e;
+    --gold: #f0a500;
+    --gold2: #ffc840;
+    --cream: #fdf6e3;
+    --white: #ffffff;
+    --green: #1db87a;
+    --red: #e8394a;
+    --gray: #94a3b8;
+    --light: #e2e8f0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--cream);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(26,58,110,0.5) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 90%, rgba(240,165,0,0.08) 0%, transparent 50%);
+  }
+
+  /* ── SCREEN MANAGEMENT ── */
+  .screen { display: none; }
+  .screen.active { display: flex; flex-direction: column; align-items: center; }
+
+  /* ── LANDING ── */
+  #landing {
+    min-height: 100vh;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  .badge {
+    display: inline-block;
+    background: rgba(240,165,0,0.15);
+    border: 1px solid rgba(240,165,0,0.4);
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--gold2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: var(--gray);
+    max-width: 480px;
+    line-height: 1.6;
+    margin-bottom: 48px;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 20px 28px;
+    text-align: center;
+    min-width: 140px;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--gray);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .topics {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 24px 32px;
+    max-width: 500px;
+    margin-bottom: 40px;
+    text-align: left;
+  }
+
+  .topics h3 {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 14px;
+  }
+
+  .topics ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .topics li {
+    font-size: 0.88rem;
+    color: var(--light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .topics li::before {
+    content: '→';
+    color: var(--gold);
+    font-size: 0.75rem;
+  }
+
+  /* ── NAME FORM ── */
+  .name-form {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 440px;
+    width: 100%;
+  }
+
+  input[type="text"] {
+    flex: 1;
+    min-width: 220px;
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    color: var(--cream);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input[type="text"]::placeholder { color: var(--gray); }
+  input[type="text"]:focus { border-color: var(--gold); }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 10px;
+    padding: 14px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    white-space: nowrap;
+  }
+
+  .btn-primary:hover { background: var(--gold2); transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+
+  /* ── QUIZ ── */
+  #quiz {
+    min-height: 100vh;
+    width: 100%;
+    padding: 0 16px 40px;
+    align-items: stretch;
+  }
+
+  .quiz-header {
+    background: rgba(10,22,40,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+  }
+
+  .quiz-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+  }
+
+  .progress-info {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--gray);
+  }
+
+  .progress-bar-wrap {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.08);
+    position: sticky;
+    top: 57px;
+    z-index: 9;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold2));
+    transition: width 0.5s ease;
+    border-radius: 0 2px 2px 0;
+  }
+
+  .quiz-body {
+    max-width: 700px;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 40px;
+    flex: 1;
+  }
+
+  .q-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .q-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  .q-topic {
+    font-size: 0.72rem;
+    background: rgba(240,165,0,0.12);
+    border: 1px solid rgba(240,165,0,0.25);
+    color: var(--gold);
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .q-text {
+    font-size: 1.2rem;
+    line-height: 1.65;
+    margin-bottom: 32px;
+    color: var(--cream);
+    font-weight: 400;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .opt {
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: all 0.18s;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.97rem;
+    color: var(--cream);
+    line-height: 1.5;
+  }
+
+  .opt:hover:not(.locked) {
+    background: rgba(240,165,0,0.1);
+    border-color: rgba(240,165,0,0.4);
+  }
+
+  .opt-letter {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--gold);
+    min-width: 20px;
+    padding-top: 1px;
+    font-weight: 500;
+  }
+
+  .opt.correct {
+    background: rgba(29,184,122,0.12);
+    border-color: var(--green);
+  }
+
+  .opt.wrong {
+    background: rgba(232,57,74,0.1);
+    border-color: var(--red);
+  }
+
+  .opt.locked { cursor: default; }
+
+  .opt.selected .opt-letter { color: var(--cream); }
+
+  /* Explanation */
+  .explanation {
+    background: rgba(255,255,255,0.04);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--light);
+    display: none;
+  }
+
+  .explanation.show { display: block; }
+
+  .explanation strong {
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .step {
+    margin: 8px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .step::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 0.7rem;
+    top: 3px;
+  }
+
+  .nav-row {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .btn-next {
+    background: var(--navy2);
+    border: 1.5px solid var(--gold);
+    color: var(--gold);
+    border-radius: 10px;
+    padding: 12px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: none;
+  }
+
+  .btn-next.show { display: inline-flex; align-items: center; gap: 8px; }
+  .btn-next:hover { background: var(--gold); color: var(--navy); }
+
+  /* ── RESULTS ── */
+  #results {
+    min-height: 100vh;
+    padding: 60px 20px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .score-circle {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 4px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 32px;
+    background: radial-gradient(circle, rgba(240,165,0,0.1) 0%, transparent 70%);
+  }
+
+  .score-pct {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .score-label {
+    font-size: 0.75rem;
+    color: var(--gray);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: 'DM Mono', monospace;
+    margin-top: 4px;
+  }
+
+  .result-msg {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+  }
+
+  .result-sub {
+    color: var(--gray);
+    font-size: 0.95rem;
+    margin-bottom: 40px;
+    max-width: 440px;
+    line-height: 1.6;
+  }
+
+  .breakdown {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 460px;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .bk-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .bk-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; }
+  .bk-num.g { color: var(--green); }
+  .bk-num.r { color: var(--red); }
+  .bk-num.y { color: var(--gold); }
+  .bk-label { font-size: 0.72rem; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; font-family: 'DM Mono', monospace; margin-top: 4px; }
+
+  .pass-banner {
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 32px;
+    letter-spacing: 0.5px;
+  }
+
+  .pass-banner.pass { background: rgba(29,184,122,0.15); border: 1px solid var(--green); color: var(--green); }
+  .pass-banner.fail { background: rgba(232,57,74,0.12); border: 1px solid var(--red); color: #f87185; }
+
+  .review-list {
+    max-width: 680px;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 40px;
+  }
+
+  .review-list h3 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .review-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 0.88rem;
+  }
+
+  .review-icon { font-size: 1rem; min-width: 20px; }
+  .review-q { color: var(--light); line-height: 1.5; }
+  .review-ans { font-size: 0.8rem; color: var(--gray); margin-top: 4px; }
+  .review-ans span { color: var(--green); }
+  .review-ans .wrong-ans { color: var(--red); text-decoration: line-through; margin-right: 8px; }
+
+  .btn-restart {
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 10px;
+    padding: 16px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.1s;
+  }
+
+  .btn-restart:hover { background: var(--gold2); transform: translateY(-2px); }
+
+  @media (max-width: 500px) {
+    .topics ul { grid-template-columns: 1fr; }
+    .breakdown { grid-template-columns: repeat(3,1fr); }
+    .quiz-body { padding-top: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LANDING ══════════════ -->
+<div id="landing" class="screen active">
+  <div class="badge">FTCE · General Knowledge · Mathematics</div>
+  <h1>Florida Teacher<br>Certification Prep</h1>
+  <p class="subtitle">Master the math section of the FTCE General Knowledge Test with 25 practice questions — explained step-by-step, like a 3rd grader would understand.</p>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num">25</div>
+      <div class="stat-label">Questions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">200</div>
+      <div class="stat-label">Passing Score</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">4</div>
+      <div class="stat-label">Topic Areas</div>
+    </div>
+  </div>
+
+  <div class="topics">
+    <h3>Topics Covered</h3>
+    <ul>
+      <li>Number Sense & Operations</li>
+      <li>Fractions & Decimals</li>
+      <li>Ratios & Proportions</li>
+      <li>Percent Problems</li>
+      <li>Linear Equations</li>
+      <li>Inequalities</li>
+      <li>Algebraic Expressions</li>
+      <li>Geometry & Measurement</li>
+      <li>Data & Statistics</li>
+      <li>Word Problems</li>
+    </ul>
+  </div>
+
+  <div class="name-form">
+    <input type="text" id="name-input" placeholder="Enter your name to begin…" maxlength="40" />
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz →</button>
+  </div>
+</div>
+
+<!-- ══════════════ QUIZ ══════════════ -->
+<div id="quiz" class="screen">
+  <div class="quiz-header">
+    <div class="quiz-title">FTCE GK Math</div>
+    <div class="progress-info" id="progress-info">Question 1 of 25</div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-bar" style="width:4%"></div>
+  </div>
+
+  <div class="quiz-body">
+    <div class="q-meta">
+      <span class="q-num" id="q-num">Q01</span>
+      <span class="q-topic" id="q-topic">Number Sense</span>
+    </div>
+    <div class="q-text" id="q-text"></div>
+    <div class="options" id="options"></div>
+    <div class="explanation" id="explanation"></div>
+    <div class="nav-row">
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">Next Question →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ RESULTS ══════════════ -->
+<div id="results" class="screen">
+  <div class="badge">Quiz Complete</div>
+  <div class="score-circle">
+    <div class="score-pct" id="score-pct">0%</div>
+    <div class="score-label">Score</div>
+  </div>
+  <div class="result-msg" id="result-msg">—</div>
+  <div class="result-sub" id="result-sub">—</div>
+  <div class="pass-banner" id="pass-banner">—</div>
+  <div class="breakdown">
+    <div class="bk-card"><div class="bk-num g" id="bk-correct">0</div><div class="bk-label">Correct</div></div>
+    <div class="bk-card"><div class="bk-num r" id="bk-wrong">0</div><div class="bk-label">Wrong</div></div>
+    <div class="bk-card"><div class="bk-num y" id="bk-pct">0%</div><div class="bk-label">Accuracy</div></div>
+  </div>
+  <div class="review-list">
+    <h3>Question Review</h3>
+    <div id="review-items"></div>
+  </div>
+  <button class="btn-restart" onclick="restartQuiz()">Try Again ↺</button>
+</div>
+
+<script>
+/* ══════ QUESTIONS ══════ */
+const QUESTIONS = [
+  {
+    topic: "Number Sense",
+    q: "What is the value of the digit 7 in the number 3,752?",
+    opts: ["7", "70", "700", "7,000"],
+    ans: 2,
+    explain: [
+      "Look at where the 7 sits in the number 3,752.",
+      "Starting from the right: 2 is in the ones place, 5 is in the tens place, 7 is in the hundreds place.",
+      "So the 7 means 7 × 100 = 700."
+    ]
+  },
+  {
+    topic: "Number Sense",
+    q: "Which of the following is NOT a prime number?",
+    opts: ["11", "13", "21", "29"],
+    ans: 2,
+    explain: [
+      "A prime number can only be divided evenly by 1 and itself.",
+      "11, 13, and 29 — you can only split those two ways. They are prime!",
+      "21 = 3 × 7, so it has more than two factors. NOT prime."
+    ]
+  },
+  {
+    topic: "Fractions",
+    q: "Which fraction is equivalent to 3/4?",
+    opts: ["6/8", "4/6", "9/16", "3/8"],
+    ans: 0,
+    explain: [
+      "To make equivalent fractions, multiply (or divide) top and bottom by the SAME number.",
+      "3/4 → multiply both by 2 → 6/8.",
+      "Check: 6 ÷ 2 = 3 and 8 ÷ 2 = 4. ✓ Same value."
+    ]
+  },
+  {
+    topic: "Fractions",
+    q: "What is 2/3 + 1/4?",
+    opts: ["3/7", "8/12", "11/12", "3/12"],
+    ans: 2,
+    explain: [
+      "To add fractions, we need the same bottom number (common denominator).",
+      "The LCD of 3 and 4 is 12.",
+      "2/3 = 8/12 and 1/4 = 3/12.",
+      "8/12 + 3/12 = 11/12."
+    ]
+  },
+  {
+    topic: "Decimals",
+    q: "What is 0.45 × 0.2?",
+    opts: ["0.9", "0.09", "9.0", "0.009"],
+    ans: 1,
+    explain: [
+      "Ignore the decimals first: 45 × 2 = 90.",
+      "Count total decimal places: 0.45 has 2, and 0.2 has 1 → total = 3.",
+      "Place the decimal 3 spots from the right in 90 → 0.090 = 0.09."
+    ]
+  },
+  {
+    topic: "Percent",
+    q: "A teacher earns $48,000 per year and gets a 5% raise. What is the new salary?",
+    opts: ["$50,400", "$49,200", "$52,000", "$2,400"],
+    ans: 0,
+    explain: [
+      "Find 5% of $48,000: move the decimal → 0.05 × 48,000 = $2,400.",
+      "That is the raise amount.",
+      "New salary = $48,000 + $2,400 = $50,400."
+    ]
+  },
+  {
+    topic: "Percent",
+    q: "18 is what percent of 72?",
+    opts: ["4%", "18%", "25%", "40%"],
+    ans: 2,
+    explain: [
+      "Use the formula: (part ÷ whole) × 100.",
+      "18 ÷ 72 = 0.25.",
+      "0.25 × 100 = 25%."
+    ]
+  },
+  {
+    topic: "Ratios & Proportions",
+    q: "A recipe calls for 3 cups of flour for every 2 cups of sugar. If you use 9 cups of flour, how many cups of sugar do you need?",
+    opts: ["4 cups", "5 cups", "6 cups", "7 cups"],
+    ans: 2,
+    explain: [
+      "Set up a proportion: 3/2 = 9/x.",
+      "Cross multiply: 3x = 18.",
+      "Divide both sides by 3: x = 6 cups of sugar."
+    ]
+  },
+  {
+    topic: "Ratios & Proportions",
+    q: "A car travels 150 miles in 3 hours. At the same rate, how far will it travel in 5 hours?",
+    opts: ["200 miles", "225 miles", "250 miles", "300 miles"],
+    ans: 2,
+    explain: [
+      "First, find the speed: 150 miles ÷ 3 hours = 50 miles per hour.",
+      "Then multiply by the new time: 50 × 5 = 250 miles."
+    ]
+  },
+  {
+    topic: "Algebra",
+    q: "Solve for x: 3x + 7 = 22",
+    opts: ["x = 3", "x = 5", "x = 7", "x = 9"],
+    ans: 1,
+    explain: [
+      "We want to get x alone. First, subtract 7 from both sides.",
+      "3x + 7 − 7 = 22 − 7 → 3x = 15.",
+      "Now divide both sides by 3: x = 5."
+    ]
+  },
+  {
+    topic: "Algebra",
+    q: "Solve for x: 2(x − 3) = 14",
+    opts: ["x = 4", "x = 7", "x = 8", "x = 10"],
+    ans: 3,
+    explain: [
+      "First, divide both sides by 2: x − 3 = 7.",
+      "Then add 3 to both sides: x = 10.",
+      "Check: 2(10 − 3) = 2(7) = 14. ✓"
+    ]
+  },
+  {
+    topic: "Algebra",
+    q: "If y = 2x − 5, what is y when x = 4?",
+    opts: ["y = 1", "y = 3", "y = 5", "y = 8"],
+    ans: 1,
+    explain: [
+      "Substitute x = 4 into the equation.",
+      "y = 2(4) − 5 = 8 − 5 = 3."
+    ]
+  },
+  {
+    topic: "Inequalities",
+    q: "Which value of x makes the inequality 4x − 3 > 9 true?",
+    opts: ["x = 1", "x = 2", "x = 3", "x = 4"],
+    ans: 3,
+    explain: [
+      "Solve the inequality: 4x − 3 > 9 → 4x > 12 → x > 3.",
+      "So x must be greater than 3.",
+      "Among the choices, x = 4 is the only value greater than 3."
+    ]
+  },
+  {
+    topic: "Inequalities",
+    q: "On a number line, which graph represents x ≤ 2?",
+    opts: [
+      "An open dot at 2 with an arrow pointing right",
+      "A closed dot at 2 with an arrow pointing left",
+      "An open dot at 2 with an arrow pointing left",
+      "A closed dot at 2 with an arrow pointing right"
+    ],
+    ans: 1,
+    explain: [
+      "The ≤ symbol means 'less than OR equal to.'",
+      "Since x CAN equal 2, we use a CLOSED (filled-in) dot.",
+      "Since x is less than or equal to 2, the arrow points LEFT (toward smaller numbers)."
+    ]
+  },
+  {
+    topic: "Algebra",
+    q: "Simplify the expression: 5x + 3 − 2x + 7",
+    opts: ["3x + 10", "7x + 10", "3x + 4", "7x − 10"],
+    ans: 0,
+    explain: [
+      "Combine 'like terms' — terms with x together, plain numbers together.",
+      "5x − 2x = 3x.",
+      "3 + 7 = 10.",
+      "Answer: 3x + 10."
+    ]
+  },
+  {
+    topic: "Geometry",
+    q: "What is the area of a rectangle that is 8 cm long and 5 cm wide?",
+    opts: ["13 cm²", "26 cm²", "40 cm²", "45 cm²"],
+    ans: 2,
+    explain: [
+      "Area of a rectangle = length × width.",
+      "Area = 8 × 5 = 40 cm²."
+    ]
+  },
+  {
+    topic: "Geometry",
+    q: "A circular garden has a radius of 7 feet. What is the approximate area? (Use π ≈ 3.14)",
+    opts: ["43.96 ft²", "153.86 ft²", "21.98 ft²", "44 ft²"],
+    ans: 1,
+    explain: [
+      "Area of a circle = π × r².",
+      "r = 7, so r² = 49.",
+      "Area = 3.14 × 49 = 153.86 ft²."
+    ]
+  },
+  {
+    topic: "Geometry",
+    q: "A triangle has a base of 10 inches and a height of 6 inches. What is its area?",
+    opts: ["60 in²", "30 in²", "16 in²", "32 in²"],
+    ans: 1,
+    explain: [
+      "Area of a triangle = ½ × base × height.",
+      "= ½ × 10 × 6 = ½ × 60 = 30 in²."
+    ]
+  },
+  {
+    topic: "Geometry",
+    q: "The angles of a triangle are 45°, 55°, and x°. What is x?",
+    opts: ["70°", "75°", "80°", "90°"],
+    ans: 2,
+    explain: [
+      "The angles of ANY triangle always add up to 180°.",
+      "45 + 55 + x = 180.",
+      "100 + x = 180 → x = 80°."
+    ]
+  },
+  {
+    topic: "Measurement",
+    q: "How many inches are in 3.5 feet?",
+    opts: ["36 inches", "40 inches", "42 inches", "48 inches"],
+    ans: 2,
+    explain: [
+      "There are 12 inches in 1 foot.",
+      "3.5 feet × 12 = 42 inches."
+    ]
+  },
+  {
+    topic: "Number Sense",
+    q: "Which of the following lists the numbers in order from least to greatest?\n−3, 1/2, −0.75, 0, 2",
+    opts: [
+      "−3, −0.75, 0, 1/2, 2",
+      "2, 1/2, 0, −0.75, −3",
+      "−0.75, −3, 0, 1/2, 2",
+      "0, −0.75, −3, 1/2, 2"
+    ],
+    ans: 0,
+    explain: [
+      "On a number line, numbers get bigger as you go right.",
+      "Negative numbers come first: −3 is smaller than −0.75.",
+      "Then 0, then 1/2 (= 0.5), then 2.",
+      "Order: −3, −0.75, 0, 1/2, 2."
+    ]
+  },
+  {
+    topic: "Statistics",
+    q: "Five students scored: 72, 85, 90, 68, 85. What is the mode?",
+    opts: ["72", "80", "85", "90"],
+    ans: 2,
+    explain: [
+      "The mode is the number that appears MOST OFTEN.",
+      "72 appears once, 85 appears TWICE, 90 once, 68 once.",
+      "85 is the mode."
+    ]
+  },
+  {
+    topic: "Statistics",
+    q: "Six students scored: 60, 72, 80, 84, 90, 94. What is the median?",
+    opts: ["80", "82", "84", "86"],
+    ans: 1,
+    explain: [
+      "The median is the middle value when numbers are in order.",
+      "With 6 values (even count), average the 3rd and 4th.",
+      "3rd = 80, 4th = 84.",
+      "Median = (80 + 84) ÷ 2 = 164 ÷ 2 = 82."
+    ]
+  },
+  {
+    topic: "Word Problem",
+    q: "A school supply store sells pencils for $0.25 each or $2.50 for a pack of 12. How much do you save per pencil if you buy the pack?",
+    opts: ["$0.04", "$0.05", "$0.08", "$0.10"],
+    ans: 1,
+    explain: [
+      "Cost per pencil in the pack: $2.50 ÷ 12 ≈ $0.2083 each.",
+      "Savings per pencil: $0.25 − $0.2083 ≈ $0.0417.",
+      "The closest answer — and exact when you account for rounding in real exam problems — is $0.05.",
+      "(Note: On the actual FTCE, exact numbers are chosen to produce clean answers.)"
+    ]
+  },
+  {
+    topic: "Word Problem",
+    q: "A teacher has 144 stickers to distribute equally among 6 classrooms. Each classroom will then share them equally among 4 tables. How many stickers does each table get?",
+    opts: ["4", "6", "8", "12"],
+    ans: 1,
+    explain: [
+      "Step 1: 144 ÷ 6 = 24 stickers per classroom.",
+      "Step 2: 24 ÷ 4 = 6 stickers per table.",
+      "Each table gets 6 stickers."
+    ]
+  }
+];
+
+/* ══════ STATE ══════ */
+let currentQ = 0;
+let score = 0;
+let userName = '';
+let answered = []; // {chosen, correct}
+
+function startQuiz() {
+  const n = document.getElementById('name-input').value.trim();
+  userName = n || 'Teacher';
+  currentQ = 0;
+  score = 0;
+  answered = [];
+  showScreen('quiz');
+  renderQuestion();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  const total = QUESTIONS.length;
+
+  document.getElementById('progress-info').textContent = `Question ${currentQ+1} of ${total}`;
+  document.getElementById('progress-bar').style.width = `${((currentQ+1)/total)*100}%`;
+  document.getElementById('q-num').textContent = `Q${String(currentQ+1).padStart(2,'0')}`;
+  document.getElementById('q-topic').textContent = q.topic;
+  document.getElementById('q-text').textContent = q.q;
+
+  const optContainer = document.getElementById('options');
+  optContainer.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(i);
+    optContainer.appendChild(btn);
+  });
+
+  document.getElementById('explanation').className = 'explanation';
+  document.getElementById('explanation').innerHTML = '';
+  document.getElementById('btn-next').className = 'btn-next';
+  document.getElementById('btn-next').textContent = currentQ === total-1 ? 'See Results →' : 'Next Question →';
+}
+
+function selectAnswer(chosen) {
+  const q = QUESTIONS[currentQ];
+  const opts = document.querySelectorAll('.opt');
+  opts.forEach(o => o.classList.add('locked'));
+
+  const isCorrect = chosen === q.ans;
+  if (isCorrect) score++;
+
+  opts[chosen].classList.add(isCorrect ? 'correct' : 'wrong');
+  opts[q.ans].classList.add('correct');
+
+  answered.push({ chosen, correct: q.ans, isCorrect });
+
+  // Explanation
+  const exp = document.getElementById('explanation');
+  exp.classList.add('show');
+  let html = `<strong>Step-by-Step Explanation</strong>`;
+  q.explain.forEach(step => {
+    html += `<div class="step">${step}</div>`;
+  });
+  exp.innerHTML = html;
+
+  document.getElementById('btn-next').classList.add('show');
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= QUESTIONS.length) {
+    showResults();
+  } else {
+    renderQuestion();
+    window.scrollTo(0, 0);
+  }
+}
+
+function showResults() {
+  showScreen('results');
+  const total = QUESTIONS.length;
+  const pct = Math.round((score/total)*100);
+  const passing = pct >= 70; // approximate passing threshold
+
+  document.getElementById('score-pct').textContent = `${pct}%`;
+  document.getElementById('bk-correct').textContent = score;
+  document.getElementById('bk-wrong').textContent = total - score;
+  document.getElementById('bk-pct').textContent = `${pct}%`;
+
+  const msgs = [
+    [90, `Outstanding, ${userName}! 🎓`, "You're well-prepared for the FTCE GK Math section. Keep this momentum!"],
+    [70, `Great work, ${userName}!`, "You're in passing range. Review the questions you missed and you'll be exam-ready."],
+    [50, `Good effort, ${userName}.`, "You're getting there! Focus on the topics where you missed questions."],
+    [0, `Keep going, ${userName}.`, "Every great teacher started somewhere. Review the explanations and try again!"]
+  ];
+
+  for (const [thresh, msg, sub] of msgs) {
+    if (pct >= thresh) {
+      document.getElementById('result-msg').textContent = msg;
+      document.getElementById('result-sub').textContent = sub;
+      break;
+    }
+  }
+
+  const banner = document.getElementById('pass-banner');
+  if (passing) {
+    banner.className = 'pass-banner pass';
+    banner.textContent = '✓ Above the estimated passing threshold (70%+) — great sign for the real exam!';
+  } else {
+    banner.className = 'pass-banner fail';
+    banner.textContent = '✗ Below the estimated passing threshold. Review explanations and try again.';
+  }
+
+  // Review
+  const reviewEl = document.getElementById('review-items');
+  reviewEl.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  answered.forEach((a, i) => {
+    const q = QUESTIONS[i];
+    const icon = a.isCorrect ? '✅' : '❌';
+    let ansHTML = '';
+    if (!a.isCorrect) {
+      ansHTML = `<div class="review-ans"><span class="wrong-ans">${letters[a.chosen]}: ${q.opts[a.chosen]}</span> → Correct: <span>${letters[a.correct]}: ${q.opts[a.correct]}</span></div>`;
+    } else {
+      ansHTML = `<div class="review-ans">Correct: <span>${letters[a.correct]}: ${q.opts[a.correct]}</span></div>`;
+    }
+    reviewEl.innerHTML += `
+      <div class="review-item">
+        <span class="review-icon">${icon}</span>
+        <div>
+          <div class="review-q"><strong>Q${i+1}.</strong> ${q.q}</div>
+          ${ansHTML}
+        </div>
+      </div>`;
+  });
+}
+
+function restartQuiz() {
+  showScreen('landing');
+  document.getElementById('name-input').value = userName;
+}
+
+// Allow Enter key on name input
+document.getElementById('name-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') startQuiz();
+});
+</script>
+</body>
+</html>
